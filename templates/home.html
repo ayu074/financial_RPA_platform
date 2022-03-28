@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\worksheet.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\card.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\worksheet.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\module.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <link rel='stylesheet' href='/static/css/worksheet.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/card.js'></script>
+        <script type='text/javascript' src='/static/js/worksheet.js'></script>
+        <script type='text/javascript' src='/static/js/module.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#left-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+                $("#right-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169',
+                });
+            });
+        
+        </script>
+    </head>
+    <body>
+        <script>
+            window.onload = function() {
+                get_card_list();
+                let username = get_user_name();
+                document.getElementById('user').innerHTML = username;
+                append_change_pwd_btn();
+            }   
+        </script>
+        <div class='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a href='/' class='normal-link' >Consolidated Finance RPA</a></div>
+            <div class='search'>
+                <input class='search-box' type="text" id='search-box' placeholder="搜索RPA">
+                <img class='search-logo' src='/static/img/search.png'>
+            </div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                帮助
+            </div>  
+            <div id=user class='function-navi' unselectable='on' onselectstart="return false;" onclick="jump_to_url('/login')">
+                登录
+            </div>  
+        </div>
+        <div class='body'>
+            <div class='leftwall' id='left-wall'></div>
+            <div class='main-canvas' id='main-canvas'>
+                <div class='title'>
+                    <h1>RPA</h1>
+                    <p>Robotic Process Automatic which eases the mannual operation.</p>
+                </div>
+                <div class='func-area' id='func-area'>
+
+            </div>
+
+            </div>
+            <div class='rightwall' id='right-wall'></div>
+        </div>
+    </body>
+</html>

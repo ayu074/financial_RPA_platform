@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\worksheet.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\card.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\worksheet.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\module.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <link rel='stylesheet' href='/static/css/worksheet.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/card.js'></script>
+        <script type='text/javascript' src='/static/js/worksheet.js'></script>
+        <script type='text/javascript' src='/static/js/module.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#left-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+                $("#right-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169',
+                });
+            });
+	
+        </script>
+        <style>
+            html, body {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            window.onload = function() {
+                load_work_order_list();
+                var start_date_input = document.getElementById('start_date_input');
+                var end_date_input = document.getElementById('end_date_input');
+                var today = new Date();
+                start_date_input.value = today.getFullYear() + '-01-01';
+                end_date_input.value = today.toISOString().slice(0, 10);
+                let username = get_user_name();
+                document.getElementById('user').innerHTML = username;
+                append_change_pwd_btn();
+                append_module_spec();
+            }
+
+            function create_workorder() {
+                jump_to_url('new');
+            }
+        </script>
+        <div class='top-navi' id='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a href='/' class='normal-link' >Consolidated Finance RPA</a></div>
+            <div class='search'>
+                <input class='search-box' type="text" id='search-box' placeholder="搜索RPA">
+                <img class='search-logo' src='/static/img/search.png'>
+            </div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;" id='help'>
+                帮助
+            </div>  
+            <div id=user class='function-navi' unselectable='on' onselectstart="return false;" onclick="jump_to_url('/login')">
+                登录
+            </div>  
+        </div>
+        <div class='body'>
+            <div class='leftwall' id='left-wall'></div>
+            <div class='main-canvas' id='main-canvas'>
+                <div class='title'>
+                    <h1>RPA</h1>
+                    <p>Robotic Process Automatic which eases the mannual operation.</p>
+                </div>
+                <div class=filter-area>
+                    <div class=filter-line>
+                        <div class=filter-header>
+                            已选条件
+                        </div>
+                        <div id=current-filter class=filter-func>
+                            <div class='current-filter' style="display: none;"></div>
+                        </div>
+                        <div class=filter-func>
+                            <div class=filter-btn id='clear_filter'>清空筛选</div>
+                        </div>
+                    </div>
+                    
+                    <div class=filter-line>
+                        <div class=filter-header>
+                            主题
+                        </div>
+                        <div class=filter-func>
+                            <input class=filter-box type=text placeholder="主题">
+                        </div>
+                    </div>
+                    <div class=filter-line>
+                        <div class=filter-header>
+                            单据号
+                        </div>
+                        <div class=filter-func>
+                            <input class=filter-box type=text placeholder="单据号">
+                        </div>
+                    </div>
+                    <div class=filter-line>
+                        <div class=filter-header>
+                            经办日期
+                        </div>
+                        <div class=filter-func>
+                            起始日
+                            <input id='start_date_input' style='margin-left: 10px;' class=filter-box type=date>
+                        </div>
+                        <div class=filter-func>
+                            结束日
+                            <input id='end_date_input' style='margin-left: 10px;' class=filter-box type=date>
+                        </div>
+                    </div>
+                    <div class=filter-line style="border: none;">
+                            <div class=filter-btn style="text-align:center;display: inline-block; margin-left: 80%; width: 5%; padding: 3px;">确定</div>
+                    </div>
+                </div>
+                <div class='func-area' id='func-area'>
+                    <div class='worksheet' id='worksheet'>
+                        <div id='create_new' class=filter-btn style='text-align:center; display: block; margin-right: 10%; float:right; width:5%; padding:3px;' onclick="create_workorder()">新建</div>
+                        <div class='worksheet-head'>
+                            <div class='col'>序号</div>
+                            <div class='col'>单据号</div>
+                            <div class='col'>经办日期</div>
+                            <div class='col'>关键字</div>
+                            <div class='col'>单据状态</div>
+                            <div class='col'>经办人</div>
+                        </div>
+                    </div>
+                    <div class='notice' id='no_record'>未找到操作记录</div>
+                </div>
+            </div>
+
+            </div>
+            <div class='rightwall' id='right-wall'></div>
+        </div>
+        <div class=args id=user_name>{{user_name}}</div>
+        <div class=args id=module_name>{{module_name}}</div>
+    </body>
+</html>

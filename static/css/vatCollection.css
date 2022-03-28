@@ -1,0 +1,82 @@
+.selectable-table {
+    left: 5%;
+    position: relative;
+    width: 100%;
+    --account_count: 9
+}
+
+.table-head-row {
+    position: relative;
+    width: 100%;
+    height: 2em;
+    margin: 1px;
+}
+
+.table-head-account {
+    display: inline-block;
+    height: 2em;
+    margin: 6px 10px;
+    --body_col_witdh: calc(calc((100/var(--account_count)) * 1%) - 40px);
+    min-width: calc(calc((100/var(--account_count)) * 1%) - 40px);
+    width: var(--body_col_witdh);
+    text-align: center;
+}
+.table-head-account:hover {
+    font-weight: 600 !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+}
+
+.table-head-col {
+    display: inline-block;
+    width: calc(var(--body_col_witdh) * 2);
+    min-width:calc(calc((100/var(--account_count)) * 1%) + 40px);
+    height: 2em;
+    line-height: 2em;
+    min-height: 2em;
+    text-align: left;
+    vertical-align: middle;
+}
+.table-head-col:hover {
+    font-weight: 600 !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+.table-row {
+    position: relative;
+    width: 100%;
+    height: 2em;
+    margin: 6px 0px;
+}
+
+.table-cell {
+    display: inline-block;
+    min-width:calc(calc((100/var(--account_count)) * 1%) - 40px);
+    height: 2em;
+    min-height: 2em;
+    line-height: 2em;
+    margin: 0px 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+.table-cell:hover {
+    background-color: #bfc6dfbd !important;
+    font-weight: 600;
+    cursor: pointer !important;
+}
+.operation {
+    position: relative;
+    width: 80%;
+    left: 5%;
+    text-align: center;
+    height:3em;
+    min-height: 3em;
+    line-height: 3em;
+    margin: 2em 0;
+
+}
+.operation:hover {
+    background-color: #e1e1e1;
+    cursor: pointer;
+}

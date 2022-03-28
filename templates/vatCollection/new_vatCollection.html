@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\worksheet.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\vatCollection.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <link rel='stylesheet' href='/static/css/worksheet.css'>
+        <link rel='stylesheet' href='/static/css/vatCollection.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#left-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+                $("#right-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169',
+                });
+            });
+	
+        </script>
+        <style>
+            html, body {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- local -->
+        <script type='text/javascript' src='D:\FP\static\js\card.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\worksheet.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\module.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\vatCollection.js'></script>
+        <!-- route -->
+        <script type='text/javascript' src='/static/js/card.js'></script>
+        <script type='text/javascript' src='/static/js/worksheet.js'></script>
+        <script type='text/javascript' src='/static/js/module.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/vatCollection.js'></script>
+        <script>
+            window.onload = function() {
+                build_data_matrix();
+                set_default_period();
+                let username = get_user_name();
+                document.getElementById('user').innerHTML = username;
+                append_change_pwd_btn();
+            }
+
+
+        </script>
+        <div class='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a href='/' class='normal-link' >Consolidated Finance RPA</a></div>
+            <div class='search'>
+                <input class='search-box' type="text" id='search-box' placeholder="搜索RPA">
+                <img class='search-logo' src='/static/img/search.png'>
+            </div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                帮助
+            </div>  
+            <div id=user class='function-navi' unselectable='on' onselectstart="return false;" onclick="jump_to_url('/login')">
+                登录
+            </div>  
+        </div>
+        <div class='body'>
+            <div class='leftwall' id='left-wall'></div>
+            <div class='main-canvas' id='main-canvas'>
+                <div class='title'>
+                    <h1>RPA</h1>
+                    <p>Robotic Process Automatic which eases the mannual operation.</p>
+                </div>
+                <div class=filter-area>
+                    <div class=filter-line>
+                        <div class=filter-header style='width: 20%;'>
+                            拉取余额期间：
+                        </div>
+                        <div class=filter-func>
+                            <select id='select_year'>
+                            </select>
+                            年
+                        </div>
+                        <div class=filter-func>
+                            <select id='select_month'>
+                            </select>
+                            月
+                        </div>
+                    </div>
+                </div>
+                <div class=selectable-table id=main-table>
+                </div>
+                <div class=operation onclick='submit_vatCollection()'>
+                    从金蝶拉取余额并生成结转凭证
+                </div>
+
+            </div>
+            <div class='rightwall' id='right-wall'></div>
+        </div>
+        <div class=args id=all-selected value=yes></div>
+        <script>
+            // DOM sequence
+            function select_all() {
+                let table_cells = document.getElementsByClassName('table-cell');
+                let selected = 0;
+                for (i=0; i<table_cells.length; i++) {
+                    if (table_cells[i].getAttribute('checked') == '0') {
+                        selected = 1;
+                        break;
+                    }
+                }
+                if (selected == 0) {
+                    for (i=0; i<table_cells.length; i++) {
+                        table_cells[i].setAttribute('checked', '0');
+                        table_cells[i].innerHTML = '';
+                    }
+                }else {
+                    for (i=0; i<table_cells.length; i++) {
+                        table_cells[i].setAttribute('checked', '1');
+                        table_cells[i].innerHTML = '&radic;';
+                    }
+                }
+            }
+
+            function highlight_info(cell_element) {
+                let full_id = cell_element.getAttribute('id');
+                let account_element = document.getElementById(String(full_id).match(/(?<=.*_).*/g)[0]);
+                account_element.setAttribute('style', 'text-decoration: underline; font-weight: 600;');
+                let entity_element = document.getElementById(String(full_id).match(/.*(?=_.*)/g)[0]);
+                entity_element.setAttribute('style', 'text-decoration: underline; font-weight: 600;');
+            }
+
+            function unhighlight_info(cell_element) {
+                let full_id = cell_element.getAttribute('id');
+                let account_element = document.getElementById(String(full_id).match(/(?<=.*_).*/g)[0]);
+                account_element.setAttribute('style', 'text-decoration: none; font-weight: 400;');
+                let entity_element = document.getElementById(String(full_id).match(/.*(?=_.*)/g)[0]);
+                entity_element.setAttribute('style', 'text-decoration: none; font-weight: 400;');
+            }
+
+            function account_all_select(cell_element) {
+                let account_id = cell_element.getAttribute('id');
+                let main_table = document.getElementById('main-table');
+                let rows = main_table.childNodes;
+                // 第一遍遍历查看是否有未选中
+                let select_status = 1;
+                for (i=2; i<rows.length; i++) {
+                    let cells = rows[i].childNodes;
+                    for (j=1; j<cells.length; j++) {
+                        let cell_id = cells[j].getAttribute('id');
+                        if (cell_id.match(/(?<=.*_).*/g)[0] == account_id) {
+                            if (cells[j].getAttribute('checked') == '0') {
+                                select_status = 0;
+                            }
+                        }
+                    }
+                }
+                // 如果有未选中则全部选中,否则全部取消
+                for (i=2; i<rows.length; i++) {
+                    let cells = rows[i].childNodes;
+                    for (j=1; j<cells.length; j++) {
+                        let cell_id = cells[j].getAttribute('id');
+                        if (cell_id.match(/(?<=.*_).*/g)[0] == account_id) {
+                                if (select_status == 0) {
+                                    cells[j].setAttribute('checked', '1');
+                                    cells[j].innerHTML = '&radic;';
+                                } else {
+                                    cells[j].setAttribute('checked', '0');
+                                    cells[j].innerHTML = '';
+                                }
+                        }
+                    }
+                }
+            }
+
+            function entity_all_select(cell_element) {
+                let entity_id = cell_element.getAttribute('id');
+                let cells = document.getElementById('row_' + entity_id).childNodes;
+                // 第一遍遍历查看是否有未选中
+                let select_status = 1;
+                for (i=1; i<cells.length; i++) {
+                    if (cells[i].getAttribute('checked') == '0') {
+                        select_status = 0;
+                    }
+                }
+                // 如果有未选中则全部选中,否则全部取消
+                for (i=1; i<cells.length; i++) {
+                    if (select_status == 0) {
+                        cells[i].setAttribute('checked', '1');
+                        cells[i].innerHTML = '&radic;';
+                    } else {
+                        cells[i].setAttribute('checked', '0');
+                        cells[i].innerHTML = '';
+                    }
+                }
+            }
+
+            function submit_vatCollection() {
+                function get_query_value(query_name) {
+                    var reg = new RegExp("(^|&)" + query_name + "=([^&]*)(&|$)", "i")
+                    var r = window.location.search.substr(1).match(reg);
+                    if ( r != null) {
+                        return decodeURI(r[2]);
+                    }else {
+                        return null;
+                    }
+                }
+                var order_id = get_query_value('workorder_id');
+                var curr_year = document.getElementById('select_year').value;
+                var curr_month = document.getElementById('select_month').value;
+                var submit_json = JSON.parse('{"year": ' + curr_year + ', "month": ' + curr_month + ', "data": {}}');
+                var cell_array = document.getElementsByClassName('table-cell');
+                for (i=0; i<cell_array.length; i++) {
+                    let cell_id = cell_array[i].getAttribute('id');
+                    let account_code = cell_id.match(/(?<=.*_).*/);
+                    let entity_code = cell_id.match(/.*(?=_.*)/);
+                    if (submit_json['data'][entity_code] == null) {
+                        submit_json['data'][entity_code] = [];
+                    }
+                    if (cell_array[i].getAttribute('checked') == '1') {
+                        submit_json['data'][entity_code][submit_json['data'][entity_code].length] = account_code[0];
+                    }
+                }
+                
+                // var submit_json_string = JSON.stringify(submit_json)
+                // var html_body = document.getElementsByClassName('body')[0];
+                // var vat_form = document.createElement('form');
+                // vat_form.action = 'vat_submit';
+                // var form_json = document.createElement('textarea');
+                // form_json.name = 'entity_account_dict';
+                // form_json.value = submit_json_string;
+                // vat_form.appendChild(form_json);
+                // vat_form.style.display = 'none';
+                // vat_form.method = 'post';
+                // vat_form.target = '_self';
+                // html_body.appendChild(vat_form);
+                // vat_form.submit();
+                var create_voucher = new XMLHttpRequest();
+                create_voucher.open('POST', 'vat_submit', true);
+                create_voucher.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                create_voucher.onreadystatechange = function() {
+                    if (create_voucher.readyState == 4 && create_voucher.status == 200) {
+                        console.log('success');
+                    }
+                }
+                var post_args = 'workorder_id=' + encodeURIComponent(order_id) + '&entity_account_dict=' + encodeURIComponent(JSON.stringify(submit_json));
+                create_voucher.send(post_args);
+                //window.open('/processing?workorder_id=' + order_id + '&destination=voucherView');
+                window.location.href = '/processing?workorder_id=' + order_id + '&destination=voucherView';
+            }
+        </script>
+    </body>
+</html>

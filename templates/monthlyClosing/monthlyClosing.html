@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\worksheet.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\checkboxes.min.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\monthlyClosing.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\module.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\monthlyClosing.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <link rel='stylesheet' href='/static/css/worksheet.css'>
+        <link rel='stylesheet' href='/static/css/checkboxes.min.css'>
+        <link rel='stylesheet' href='/static/css/monthlyClosing.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/module.js'></script>
+        <script type='text/javascript' src='/static/js/monthlyClosing.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#left-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+                $("#right-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169',
+                });
+            });
+	
+        </script>
+        <style>
+            html, body {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            var current_task;
+            window.onload = function() {
+                set_default_period();
+                let username = get_user_name();
+                document.getElementById('user').innerHTML = username;
+                append_change_pwd_btn();
+                current_task = new entity_task(init_closing_data(), 2);
+            }
+        </script>
+        <div class='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a href='/' class='normal-link' >Consolidated Finance RPA</a></div>
+            <div class='search'>
+                <input class='search-box' type="text" id='search-box' placeholder="搜索RPA">
+                <img class='search-logo' src='/static/img/search.png'>
+            </div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                操作
+                <div class='dropdown-content' onclick='push_all_voucher(voucher_task)'>基础设置</div>
+                <div class='dropdown-content' style='top: 200%;' onclick='submit_closing(current_task)'>下一步</div>
+            </div> 
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                帮助
+            </div>  
+            <div id=user class='function-navi' unselectable='on' onselectstart="return false;" onclick="jump_to_url('/login')">
+                登录
+            </div>  
+        </div>
+        <div class='body'>
+            <div class='leftwall' id='left-wall'></div>
+            <div class='main-canvas' id='main-canvas'>
+                <div class='title'>
+                    <h1>月度结账</h1>
+                </div>
+                <div class=filter-area>
+                    <div class=filter-line>
+                        <div class=filter-header style='width: 20%;'>
+                            当前结账期间：
+                        </div>
+                        <div class=filter-func>
+                            <select id='select_year'>
+                            </select>
+                            年
+                        </div>
+                        <div class=filter-func>
+                            <select id='select_month'>
+                            </select>
+                            月
+                        </div>
+                    </div>
+                    <div class=filter-line>
+                        <div class=filter-header style='width: 20%; vertical-align: top;'>
+                        生成凭证类型：
+                        </div>
+                        <div class=filter-function-wrapper id=function-wrapper>
+                        </div>
+                    </div>
+                </div>
+                <div class='entity-area' id='entity-area'>
+                    <div class='entity-table' id='entity-table'>
+                        <div class='entity-line-head' id='line-head'>
+                            <div class='entity-col-code' unselectable='on' onselectstart="return false;">账套编号</div>
+                            <div class='entity-col-name' unselectable='on' onselectstart="return false;">账套名称</div>
+                            <div class='entity-col-desc' unselectable='on' onselectstart="return false;" style='top: 0; transform:none;cursor: pointer;' id=select-all onmouseover="show_select_text(this)" onmouseout="unshow_select_text(this)" onclick="select_all()">是否结账</div>
+                        </div>
+                    <div class='notice' id='no_record', style='display: none;'>未找到凭证信息</div>
+                </div>
+            </div>
+
+            </div>
+            <div class='rightwall' id='right-wall'></div>
+        </div>
+    </body>
+</html>

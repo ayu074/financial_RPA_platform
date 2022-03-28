@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\card.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/card.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#bg").jParticle({
+                    particlesNumber: 60,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+            });
+	
+        </script>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .body {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+            }
+            #bg {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                box-sizing: border-box;
+            }
+
+            #login_box {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 30%;
+                height: 50%;
+                transform: translate(-50%, -30%);
+                padding: 0 35px;
+                background-color: #E0E0E0;
+            }
+            .form-line {
+                position: relative;
+                top: 20%;
+                margin-top: 2em;
+                width: 100%;
+                text-align: center;
+            }
+            input {
+                display: block;
+                width: 90%;
+                left: 0;
+                top: 50%;
+                border: 0;
+                background-color: transparent;
+                padding: 1em;
+                outline: none;
+                outline-style: none;
+                line-height: 20px;
+                border-radius: 3px;
+                border-bottom: 1px solid black;
+                transition: all 0.3s;
+            }
+            input:focus {
+                border-color: #C2C2C2;
+            }
+            .check {
+                display: inline;
+                margin: 0;
+                padding: 0;
+                vertical-align: middle;
+                left:0;
+                width: 10%;
+
+            }
+            span {
+                line-height: 100%;
+                font-size: small;
+            }
+            .btn {
+                width: 30%;
+                text-align: center;
+                padding: 5px;
+                background-color: white;
+                cursor: pointer;
+                display: inline-block;
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+            }
+            .btn:hover {
+                background-color: rgb(240, 240, 240);
+            }
+            .btn:active {
+                background-color: #E0E0E0;
+            }
+
+        </style>
+    </head>
+    <body>
+        <script>
+            function get_query_value(query_name) {
+                var reg = new RegExp("(^|&)" + query_name + "=([^&]*)(&|$)", "i")
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return decodeURI(r[2]);
+                } else {
+                    return null;
+                }
+            }
+            function get_status(id) {
+                    var temp_status;
+                    var status_url = '/get_process_status?workorder_id=' + id;
+                    var status_request = new XMLHttpRequest();
+                    status_request.open('GET', status_url, false);
+                    status_request.onreadystatechange = function () {
+                        if (status_request.readyState == 4 && status_request.status == 200) {
+                            temp_status = status_request.responseText;
+                        }
+                    }
+                    status_request.send();
+                    console.log(temp_status);
+                    return temp_status;
+                }
+
+            window.onload = function() {
+                var status = '开始处理单据，请稍后……';
+                //var work_order_id = 'UID5d9104dbbe2c9889895';
+                var work_order_id = get_query_value('workorder_id');
+                var status_div = document.getElementById('status');
+                var destination_view = get_query_value('destination');
+                var getting_status = setInterval(function () {
+                    status = get_status(work_order_id);
+                    if (status == undefined) {
+                        status_div.innerHTML = '开始处理单据，请稍后……';
+                    } else {
+                        status_div.innerHTML = status;
+                    }
+                    if (status == '0000') {
+                        status_div.innerHTML = '已完成处理，正在跳转结果页面……';
+                        sleep(1);
+                        clearInterval(getting_status);
+                        window.location.href = '/' + destination_view + '?workorder_id=' + work_order_id;
+                    }
+                }, 1000)
+            }
+
+
+        </script>
+        <div class='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a class='normal-link' href='/'>Consolidated Finance RPA</a></div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                帮助
+            </div>  
+        </div>
+        <div class='body'>
+            <div id='bg'></div>
+            <div id='login_box' style='height: 20%;'>
+                <div class="form-line">
+                    <div id='status'>开始处理单据，请稍后……</div>
+                 </div>
+            </div>
+        </div>
+        <div class='args' id='success'>{{success}}</div>
+    </body>
+</html>

@@ -1,0 +1,103 @@
+.worksheet {
+    position: relative;
+    width: 100%;
+    height: auto;
+    --c: 6;
+}
+
+.worksheet-head {
+    font-size: 1.1em;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    left:1%;
+    color: black;
+    border-bottom: 1px solid grey;
+    font-weight: 600;
+    padding: 0.5em 0;
+    background-color: white;
+}
+.work-order {
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    left: 1%;
+    background-color: white;
+    border-bottom: 0.5px solid grey;
+    padding: 3px 0;
+    color: black;
+    font-weight: 100;
+}
+.work-order:hover {
+    cursor: pointer;
+    background-color: #cacaca;
+    color: white;
+}
+.col {
+    display:inline-block;
+    width: calc(calc((100/var(--c)) * 1%) - 20px);
+    text-align: center;
+}
+.notice {
+    font-size: 1.4em;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.filter-area {
+    position: relative;
+    width: 90%;
+}
+
+.filter-line {
+    width: 80%;
+    margin: 0 3em;
+    padding: 1em 0;
+    border-bottom: 0.5px dotted grey;
+}
+.filter-header {
+    margin-left: 5%;
+    width: 10%;
+    display: inline-block;
+}
+.filter-func {
+    margin-left: 5%;
+    display:inline-block;
+}
+.filter-box {
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    outline-style: none;
+    line-height: 20px;
+    border-radius: 3px;
+    border: 0.75px solid grey;
+    transition: all 0.3s;
+}
+.filter-btn {
+    font-size: 0.9em;
+    background-color: #eeeeee;
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 0.2px solid grey;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+.filter-btn:hover {
+    background-color: white;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.current-filter {
+    font-size: 0.9em;
+    padding: 1px 5px;
+    border: 0.5px dotted grey;
+    border-radius: 3px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}

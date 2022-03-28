@@ -1,0 +1,104 @@
+.voucher-table {
+    position: relative;
+    width: 100%;
+    height: auto;
+    --c_v: 10;
+}
+
+.voucher-head {
+    font-size: 1.1em;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    left:1%;
+    color: black;
+    border-bottom: 1px solid grey;
+    font-weight: 600;
+    padding: 0.5em 0;
+    background-color: white;
+}
+
+.col-voucher {
+    display:inline-block;
+    width: calc(calc((100/var(--c_v)) * 1%) - 0px);
+    text-align: center;
+}
+.col-voucher-desc {
+    display: inline-block;
+    width: calc(calc((100/var(--c_v)) * 1%) + 0px);
+    text-align: center;
+}
+.col-voucher-desc-active {
+    z-index: 99;
+    display: inline-block;
+    width: calc(calc((100/var(--c_v)) * 1%) - 50px);
+    padding: 2px 0px;
+    top: 50%;
+    transform: translate(0, -30%);
+    text-align: center;
+    color: #374169;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: 0.8s;
+}
+.col-voucher-desc-active:hover {
+    width: calc(calc((100/var(--c_v)) * 1%) - 30px);
+    transition: 0.8s;
+}
+.col-header {
+    display:inline-block;
+    width: calc(calc((100/var(--c_v)) * 1%) - 0px);
+    text-align: center;
+}
+
+.entry {
+    vertical-align: middle;
+    line-height: 100%;
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    height: 100%;
+    left: 1%;
+    background-color: white;
+    border-bottom: 0.5px solid grey;
+    padding: 3px 0;
+    color: #374169;
+    font-weight: 100;
+}
+.entry:hover {
+    display: inline-block;
+    cursor: pointer;
+    background-color: #cacaca;
+    color: white;
+}
+
+.voucher {
+    vertical-align: middle;
+    line-height: 100%;
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    width: 98%;
+    height: 100%;
+    left: 1%;
+    background-color: white;
+    border-bottom: 0.5px solid grey;
+    padding: 3px 0;
+    color: black;
+    font-weight: 100;
+}
+.voucher:hover {
+    cursor: pointer;
+    background-color: #cacaca;
+    color: white;
+}
+
+
+.func-btn {
+    margin-left: 10%;
+    width: 10%;
+    display: inline-block;
+}

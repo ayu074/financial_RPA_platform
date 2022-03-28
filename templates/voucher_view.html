@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<html>
+    <head>
+        <!-- local -->
+        <link rel='stylesheet' href='D:\FP\static\css\home.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\worksheet.css'>
+        <link rel='stylesheet' href='D:\FP\static\css\voucher.css'>
+        <script type='text/javascript' src='D:\FP\static\js\jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\voucher.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\worksheet.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\module.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\gen.js'></script>
+        <script type='text/javascript' src='D:\FP\static\js\jparticle.jquery.min.js'></script>
+        <!-- route -->
+        <link rel='stylesheet' href='/static/css/home.css'>
+        <link rel='stylesheet' href='/static/css/worksheet.css'>
+        <link rel='stylesheet' href='/static/css/voucher.css'>
+        <script type='text/javascript' src='/static/js/jquery-1.11.0.min.js'></script>
+        <script type='text/javascript' src='/static/js/voucher.js'></script>
+        <script type='text/javascript' src='/static/js/worksheet.js'></script>
+        <script type='text/javascript' src='/static/js/module.js'></script>
+        <script type='text/javascript' src='/static/js/gen.js'></script>
+        <script type='text/javascript' src='/static/js/jparticle.jquery.min.js'></script>
+        <script>
+
+        $(function(){
+                $("#left-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169'
+                });
+                $("#right-wall").jParticle({
+                    particlesNumber: 10,
+                    background: '#fafafa',
+                    color: '#374169',
+                });
+            });
+	
+        </script>
+        <style>
+            html, body {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            var voucher_task;
+            window.onload = function() {
+                let username = get_user_name();
+                document.getElementById('user').innerHTML = username;
+                append_change_pwd_btn();
+                let curr_voucher_data = get_voucher_info('voucher', null);
+                let voucher_id_list = []
+                for (i=0; i<curr_voucher_data.length; i++) {
+                    if(curr_voucher_data[i]['r_kd_voucher_number'] == null) {
+                        voucher_id_list.push(curr_voucher_data[i]['r_id']);
+                    }
+                }
+                voucher_task = new voucher_input_task(voucher_id_list);
+                load_voucher_head();
+                load_voucher(curr_voucher_data);
+            }
+        </script>
+        <div class='top-navi'>
+            <div class='logo' unselectable='on' onselectstart="return false;"><a href='/' class='normal-link' >Consolidated Finance RPA</a></div>
+            <div class='search'>
+                <input class='search-box' type="text" id='search-box' placeholder="搜索RPA">
+                <img class='search-logo' src='/static/img/search.png'>
+            </div>
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                操作
+                <div class='dropdown-content' onclick='push_all_voucher(voucher_task)'>全部推送</div>
+                <div class='dropdown-content' style='top: 200%;' onclick='export_voucher()'>导出</div>
+            </div> 
+            <div class='function-navi' unselectable='on' onselectstart="return false;">
+                帮助
+            </div>  
+            <div id=user class='function-navi' unselectable='on' onselectstart="return false;" onclick="jump_to_url('/login')">
+                登录
+            </div>  
+        </div>
+        <div class='body'>
+            <div class='leftwall' id='left-wall'></div>
+            <div class='main-canvas' id='main-canvas'>
+                <div class='title'>
+                    <h1>凭证预览</h1>
+                </div>
+                <div class=filter-area>
+                </div>
+                <div class='voucher-area' id='voucher-area'>
+                    <div class='voucher-table' id='voucher-table'>
+                    </div>
+                    <div class='notice' id='no_record', style='display: none;'>未找到凭证信息</div>
+                </div>
+            </div>
+
+            </div>
+            <div class='rightwall' id='right-wall'></div>
+        </div>
+    </body>
+</html>
